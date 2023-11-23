@@ -34,7 +34,7 @@ public struct TablerList<Element, Header, Footer, Row, RowBack, RowOver, Results
     public typealias Context = TablerContext<Element>
     public typealias HeaderContent = (Binding<Context>) -> Header
     public typealias FooterContent = (Binding<Context>) -> Footer
-    public typealias RowContent = (Element) -> Row
+    public typealias RowContent = (Element, Int) -> Row
     public typealias RowBackground = (Element) -> RowBack
     public typealias RowOverlay = (Element) -> RowOver
 
@@ -77,13 +77,13 @@ public struct TablerList<Element, Header, Footer, Row, RowBack, RowOver, Results
                  header: headerContent,
                  footer: footerContent)
         {
-            ForEach(results.filter(config.filter ?? { _ in true })) { element in
-                rowContent(element)
-                    .modifier(ListRowMod(config: config,
-                                         element: element))
+            ForEach(Array(results.filter(config.filter ?? { _ in true }).enumerated()), id: \.element.id) { index, element in
+                rowContent(element, index)
+                    .modifier(ListRowMod(config: config, element: element))
                     .listRowBackground(rowBackground(element))
                     .overlay(rowOverlay(element))
             }
+
             .onMove(perform: config.onMove)
             .onDelete(perform: config.onDelete)
         }

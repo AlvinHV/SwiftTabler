@@ -1,5 +1,7 @@
 # SwiftTabler
 
+TablerList also requires index as argument
+
 A multi-platform SwiftUI component for tabular data.
 
 Available as an open source library to be incorporated in SwiftUI apps.
